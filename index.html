@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Classroom Spelling Race - Teen Edition</title>
+  <style>
+    /* CSS Reset & Variables */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg-gradient: linear-gradient(135deg, #e0e7ff 0%, #f1f5f9 50%, #fae8ff 100%);
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-border: rgba(255, 255, 255, 0.8);
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --secondary: #ec4899;
+      --accent-cyan: #06b6d4;
+      --accent-amber: #f59e0b;
+      --accent-emerald: #10b981;
+      --accent-rose: #f43f5e;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --shadow-soft: 0 10px 25px -5px rgba(99, 102, 241, 0.1), 0 4px 10px -2px rgba(0,0,0,0.03);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Layout Header */
+    header {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e2e8f0;
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.82rem;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #4338ca);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, var(--secondary), #be185d);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.25);
+    }
+
+    .btn-emerald {
+      background: linear-gradient(135deg, var(--accent-emerald), #047857);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    }
+
+    .btn-amber {
+      background: linear-gradient(135deg, var(--accent-amber), #d97706);
+      color: #ffffff;
+    }
+
+    .btn-light {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid #cbd5e1;
+    }
+
+    .btn-rose-light {
+      background: #ffe4e6;
+      color: var(--accent-rose);
+      border: 1px solid #fecdd3;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      flex: 1;
+    }
+
+    @media (min-width: 992px) {
+      main {
+        grid-template-columns: 4.5fr 7.5fr;
+      }
+    }
+
+    /* Cards */
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 10px;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: #e0e7ff;
+      color: var(--primary);
+    }
+
+    /* Form Controls */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .input-text, .select-box {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      border: 2px solid #e2e8f0;
+      background: #f8fafc;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .input-text:focus, .select-box:focus {
+      border-color: var(--primary);
+      background: #ffffff;
+    }
+
+    /* Masked Box Display */
+    .secret-display {
+      background: #0f172a;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      text-align: center;
+      color: #ffffff;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    .masked-word {
+      font-family: monospace;
+      font-size: 2rem;
+      letter-spacing: 6px;
+      color: #38bdf8;
+      font-weight: 900;
+    }
+
+    .clue-text {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    /* Race Track Area */
+    .track-container {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 12px;
+      max-height: 400px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .track-lane {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #ffffff;
+      padding: 8px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid #e2e8f0;
+    }
+
+    .racer-info {
+      width: 90px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .racer-name {
+      font-size: 0.78rem;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .lane-field {
+      flex: 1;
+      height: 36px;
+      background: repeating-linear-gradient(90deg, #f1f5f9, #f1f5f9 20px, #e2e8f0 20px, #e2e8f0 40px);
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #cbd5e1;
+    }
+
+    .finish-stripe {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 12px;
+      background: repeating-linear-gradient(45deg, #000, #000 4px, #fff 4px, #fff 8px);
+      opacity: 0.7;
+    }
+
+    .racer-progress-bar {
+      position: absolute;
+      top: 2px;
+      bottom: 2px;
+      left: 0;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 8px;
+      transition: width 0.4s ease-out;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 6px;
+    }
+
+    .racer-tag {
+      font-size: 0.65rem;
+      font-weight: 900;
+      color: #ffffff;
+      background: rgba(0,0,0,0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    /* Leaderboard Table */
+    .table-box {
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      max-height: 280px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.8rem;
+    }
+
+    th {
+      background: #f8fafc;
+      padding: 10px;
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.68rem;
+      position: sticky;
+      top: 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #f1f5f9;
+      font-weight: 700;
+    }
+
+    tr:nth-child(even) {
+      background: #fafafa;
+    }
+
+    .rank-pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      background: #f1f5f9;
+    }
+
+    /* Feedback Banner */
+    .feedback-banner {
+      padding: 12px;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-align: center;
+      display: none;
+    }
+
+    .feedback-success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .feedback-error {
+      background: #ffe4e6;
+      color: #9f1239;
+      border: 1px solid #fecdd3;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 580px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .roster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 8px;
+      overflow-y: auto;
+      padding: 4px;
+    }
+
+    .roster-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .svg-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">
+        <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5">
+          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title">SPELLING RACE ARENA</div>
+        <div class="brand-subtitle">Classroom Speed Battle</div>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <button id="btnRosterModal" class="btn btn-light">👥 Roster</button>
+      <button id="btnStatsModal" class="btn btn-light">📊 Stats</button>
+      <button id="btnResetModal" class="btn btn-rose-light">🔄 Reset</button>
+    </div>
+  </header>
+
+  <!-- Main Grid -->
+  <main>
+    <!-- Left Column -->
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <!-- Teacher Panel -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="card-title">
+            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            </svg>
+            Teacher Control Center
+          </div>
+          <span id="roundBadge" class="badge">ROUND 1</span>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label">
+            <span>1. Enter Secret Target Word</span>
+            <span id="btnToggleMask" style="color:var(--primary); cursor:pointer;">👁️ Unmask</span>
+          </div>
+          <input type="password" id="secretWordInput" class="input-text" placeholder="Type secret word..." autocomplete="off" spellcheck="false" />
+        </div>
+
+        <div style="display:grid; grid-template-columns: 2fr 1fr; gap:10px;">
+          <div class="form-group">
+            <div class="form-label">Context Clue</div>
+            <input type="text" id="clueInput" class="input-text" style="font-size:0.85rem; padding:8px 10px;" placeholder="e.g. 'Noun - vehicle'" />
+          </div>
+          <div class="form-group">
+            <div class="form-label">Timer (s)</div>
+            <input type="number" id="timerInput" class="input-text" style="font-size:0.85rem; padding:8px 10px;" value="30" min="10" max="120" />
+          </div>
+        </div>
+
+        <!-- Speech Controls -->
+        <div style="display:flex; gap:8px;">
+          <button id="btnSpeak" class="btn btn-primary" style="flex:1;">🔊 Speak Word</button>
+          <button id="btnSlowSpeech" class="btn btn-light" title="Speak Slower">🐢 Slow</button>
+        </div>
+
+        <button id="btnStartRace" class="btn btn-emerald" style="padding:14px; font-size:0.95rem;">🚀 START RACE ROUND</button>
+      </div>
+
+      <!-- Student Speller Arena -->
+      <div class="glass-card" style="flex:1;">
+        <div class="card-header">
+          <div class="card-title">⚡ Speller Station</div>
+          <div id="timerDisplay" style="font-size:1.2rem; font-weight:900; color:var(--accent-amber);">30s</div>
+        </div>
+
+        <!-- Secret Word Mask Box -->
+        <div class="secret-display">
+          <div id="maskedDisplay" class="masked-word">••••••••</div>
+          <div id="clueDisplay" class="clue-text">Listen carefully to the teacher's voice!</div>
+        </div>
+
+        <form id="submissionForm" style="display:flex; flex-direction:column; gap:12px;">
+          <div class="form-group">
+            <div class="form-label">Active Student Speller</div>
+            <select id="spellerSelect" class="select-box"></select>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">Student's Answer</div>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="spellingInput" class="input-text" placeholder="Type spelling here..." disabled autocomplete="off" spellcheck="false" />
+              <button type="submit" id="btnSubmit" class="btn btn-secondary" disabled>SUBMIT</button>
+            </div>
+          </div>
+        </form>
+
+        <div id="feedbackBox" class="feedback-banner"></div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <!-- Race Track Card -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="card-title">🏎️ Live Race Track</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">Real-Time Track</div>
+        </div>
+
+        <div id="raceTrackContainer" class="track-container">
+          <!-- Dynamically Generated Lanes -->
+        </div>
+      </div>
+
+      <!-- Leaderboard Card -->
+      <div class="glass-card" style="flex:1;">
+        <div class="card-header">
+          <div class="card-title">🏆 Class Standings</div>
+          <div style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">Coins & Ranks</div>
+        </div>
+
+        <div class="table-box">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Student</th>
+                <th>Title</th>
+                <th style="text-align:right;">Coins 🪙</th>
+                <th style="text-align:right;">Streak</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardBody">
+              <!-- Dynamically Generated Rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL: ROSTER -->
+  <div id="rosterModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="card-header">
+        <div class="card-title">👥 Manage Student Roster (23 Racers)</div>
+        <button class="btn btn-light closeModal" style="padding:4px 8px;">✕</button>
+      </div>
+      <div style="display:flex; gap:8px;">
+        <button id="btnSelectAll" class="btn btn-light" style="padding:6px 12px; font-size:0.75rem;">Select All</button>
+        <button id="btnDeselectAll" class="btn btn-light" style="padding:6px 12px; font-size:0.75rem;">Deselect All</button>
+      </div>
+      <div id="rosterGrid" class="roster-grid"></div>
+      <div style="display:flex; justify-content:flex-end;">
+        <button class="btn btn-primary closeModal">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: STATS -->
+  <div id="statsModal" class="modal-overlay">
+    <div class="modal-card" style="max-width:400px;">
+      <div class="card-header">
+        <div class="card-title">📊 Match Analytics</div>
+        <button class="btn btn-light closeModal" style="padding:4px 8px;">✕</button>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; text-align:center;">
+        <div style="background:#f8fafc; padding:12px; border-radius:12px; border:1px solid #e2e8f0;">
+          <div style="font-size:0.7rem; color:var(--text-muted); font-weight:800;">TOTAL ATTEMPTS</div>
+          <div id="statAttempts" style="font-size:1.5rem; font-weight:900; color:var(--primary); margin-top:4px;">0</div>
+        </div>
+        <div style="background:#f8fafc; padding:12px; border-radius:12px; border:1px solid #e2e8f0;">
+          <div style="font-size:0.7rem; color:var(--text-muted); font-weight:800;">ACCURACY</div>
+          <div id="statAccuracy" style="font-size:1.5rem; font-weight:900; color:var(--accent-emerald); margin-top:4px;">0%</div>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:flex-end;">
+        <button class="btn btn-light closeModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: RESET -->
+  <div id="resetModal" class="modal-overlay">
+    <div class="modal-card" style="max-width:420px;">
+      <div class="card-header">
+        <div class="card-title" style="color:var(--accent-rose);">⚠️ Reset Options</div>
+        <button class="btn btn-light closeModal" style="padding:4px 8px;">✕</button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <button id="btnResetRound" class="btn btn-light" style="justify-content:space-between;">
+          <span>Reset Current Track Round</span>
+          <span style="font-size:0.7rem; color:var(--text-muted);">Keep scores</span>
+        </button>
+        <button id="btnResetFull" class="btn btn-rose-light" style="justify-content:space-between;">
+          <span>Full Match Reset</span>
+          <span style="font-size:0.7rem;">Clear all coins</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ===================================================================
+       1. WEB AUDIO API SYNTHESIZER (100% SELF-CONTAINED SOUNDS)
+       =================================================================== */
+    class AudioEngine {
+      constructor() {
+        this.ctx = null;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      playCorrect() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(523.25, now); // C5
+        osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.2); // C6
+
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      }
+
+      playWrong() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(180, now);
+        osc.frequency.linearRampToValueAtTime(110, now + 0.25);
+
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.25);
+      }
+
+      playTick() {
+        this.init();
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, now);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.04);
+      }
+    }
+
+    const audio = new AudioEngine();
+
+    /* ===================================================================
+       2. INLINE SVG AVATARS & DATA
+       =================================================================== */
+    const SVG_AVATARS = [
+      `<svg class="svg-icon" viewBox="0 0 24 24" fill="#6366f1"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>`,
+      `<svg class="svg-icon" viewBox="0 0 24 24" fill="#ec4899"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`,
+      `<svg class="svg-icon" viewBox="0 0 24 24" fill="#10b981"><circle cx="12" cy="12" r="10"/><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" fill="#fff"/></svg>`,
+      `<svg class="svg-icon" viewBox="0 0 24 24" fill="#f59e0b"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 12h10M12 7v10" stroke="#fff" stroke-width="2"/></svg>`
+    ];
+
+    const DEFAULT_STUDENTS = [
+      "Billy", "Nathan", "Hazel", "Cherry", "Alex", "Ken", 
+      "Chloe Lau", "Mabel", "Michael", "Emma", "Polly", "Kiki", 
+      "Aimee", "Chloe Wong", "Cyrus", "Issac", "Pierce", "Fabian", 
+      "Vincent", "Kitty", "yuki", "Ryson", "Leo"
+    ];
+
+    const state = {
+      players: DEFAULT_STUDENTS.map((name, i) => ({
+        id: i + 1,
+        name: name,
+        active: true,
+        coins: 0,
+        streak: 0,
+        progress: 0,
+        svg: SVG_AVATARS[i % SVG_AVATARS.length]
+      })),
+      currentRound: 1,
+      targetWord: '',
+      timerDuration: 30,
+      timeRemaining: 30,
+      timerInterval: null,
+      isRaceActive: false,
+      roundStartTime: 0,
+      correctInRound: 0,
+      totalAttempts: 0,
+      totalCorrect: 0,
+      isMasked: true,
+      speechRate: 0.85
+    };
+
+    /* ===================================================================
+       3. DOM ELEMENTS & SPEECH SYNTHESIS
+       =================================================================== */
+    const DOM = {
+      secretWordInput: document.getElementById('secretWordInput'),
+      clueInput: document.getElementById('clueInput'),
+      timerInput: document.getElementById('timerInput'),
+      btnToggleMask: document.getElementById('btnToggleMask'),
+      btnSpeak: document.getElementById('btnSpeak'),
+      btnSlowSpeech: document.getElementById('btnSlowSpeech'),
+      btnStartRace: document.getElementById('btnStartRace'),
+      roundBadge: document.getElementById('roundBadge'),
+      timerDisplay: document.getElementById('timerDisplay'),
+      maskedDisplay: document.getElementById('maskedDisplay'),
+      clueDisplay: document.getElementById('clueDisplay'),
+      spellerSelect: document.getElementById('spellerSelect'),
+      spellingInput: document.getElementById('spellingInput'),
+      btnSubmit: document.getElementById('btnSubmit'),
+      submissionForm: document.getElementById('submissionForm'),
+      feedbackBox: document.getElementById('feedbackBox'),
+      raceTrackContainer: document.getElementById('raceTrackContainer'),
+      leaderboardBody: document.getElementById('leaderboardBody'),
+      rosterGrid: document.getElementById('rosterGrid'),
+      statAttempts: document.getElementById('statAttempts'),
+      statAccuracy: document.getElementById('statAccuracy')
+    };
+
+    function speakWord() {
+      const word = DOM.secretWordInput.value.trim();
+      if (!word) {
+        showFeedback("Enter a secret target word first!", "error");
+        return;
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(word);
+        utterance.rate = state.speechRate;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    /* ===================================================================
+       4. RENDERING FUNCTIONS
+       =================================================================== */
+    function renderTracks() {
+      const active = state.players.filter(p => p.active);
+      DOM.raceTrackContainer.innerHTML = '';
+
+      if (active.length === 0) {
+        DOM.raceTrackContainer.innerHTML = '<div style="text-align:center; color:var(--text-muted); font-size:0.8rem; padding:20px;">No active racers selected in roster.</div>';
+        return;
+      }
+
+      active.forEach(p => {
+        const lane = document.createElement('div');
+        lane.className = 'track-lane';
+        lane.innerHTML = `
+          <div class="racer-info">
+            ${p.svg}
+            <span class="racer-name">${p.name}</span>
+          </div>
+          <div class="lane-field">
+            <div class="finish-stripe"></div>
+            <div class="racer-progress-bar" style="width:${Math.max(10, p.progress)}%;">
+              <span class="racer-tag">${p.progress}%</span>
+            </div>
+          </div>
+        `;
+        DOM.raceTrackContainer.appendChild(lane);
+      });
+    }
+
+    function renderLeaderboard() {
+      const sorted = [...state.players].sort((a, b) => b.coins - a.coins);
+      DOM.leaderboardBody.innerHTML = '';
+
+      sorted.forEach((p, idx) => {
+        if (!p.active) return;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${idx === 0 ? '🥇 1st' : idx === 1 ? '🥈 2nd' : idx === 2 ? '🥉 3rd' : `#${idx + 1}`}</td>
+          <td style="display:flex; align-items:center; gap:6px;">${p.svg} ${p.name}</td>
+          <td><span class="rank-pill">${p.coins >= 300 ? 'Pro Speller ⚡' : p.coins >= 100 ? 'Star Speller ⭐' : 'Rookie 🐣'}</span></td>
+          <td style="text-align:right; color:var(--accent-amber); font-weight:900;">${p.coins} 🪙</td>
+          <td style="text-align:right;">${p.streak > 1 ? `🔥 ${p.streak}` : '-'}</td>
+        `;
+        DOM.leaderboardBody.appendChild(tr);
+      });
+    }
+
+    function populateSelect() {
+      DOM.spellerSelect.innerHTML = '';
+      state.players.filter(p => p.active).forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = `${p.name} (${p.coins} 🪙)`;
+        DOM.spellerSelect.appendChild(opt);
+      });
+    }
+
+    function renderRosterModal() {
+      DOM.rosterGrid.innerHTML = '';
+      state.players.forEach(p => {
+        const label = document.createElement('label');
+        label.className = 'roster-item';
+        label.innerHTML = `
+          <input type="checkbox" data-id="${p.id}" ${p.active ? 'checked' : ''} />
+          <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${p.name}</span>
+        `;
+        DOM.rosterGrid.appendChild(label);
+      });
+
+      DOM.rosterGrid.querySelectorAll('input').forEach(cb => {
+        cb.addEventListener('change', (e) => {
+          const id = parseInt(e.target.dataset.id, 10);
+          const p = state.players.find(x => x.id === id);
+          if (p) p.active = e.target.checked;
+          renderTracks();
+          renderLeaderboard();
+          populateSelect();
+        });
+      });
+    }
+
+    /* ===================================================================
+       5. GAMEPLAY LOGIC
+       =================================================================== */
+    function startRound() {
+      const word = DOM.secretWordInput.value.trim().toUpperCase();
+      if (!word) {
+        showFeedback("Please enter a secret word first!", "error");
+        return;
+      }
+
+      state.targetWord = word;
+      state.timerDuration = parseInt(DOM.timerInput.value, 10) || 30;
+      state.timeRemaining = state.timerDuration;
+      state.isRaceActive = true;
+      state.roundStartTime = Date.now();
+      state.correctInRound = 0;
+
+      DOM.maskedDisplay.textContent = '•'.repeat(state.targetWord.length);
+      DOM.clueDisplay.textContent = DOM.clueInput.value.trim() 
+        ? `CLUE: ${DOM.clueInput.value.trim()}` 
+        : `Word length: ${state.targetWord.length} letters`;
+
+      state.players.forEach(p => p.progress = 0);
+      renderTracks();
+
+      DOM.btnStartRace.disabled = true;
+      DOM.spellingInput.disabled = false;
+      DOM.btnSubmit.disabled = false;
+      DOM.spellingInput.focus();
+
+      speakWord();
+
+      clearInterval(state.timerInterval);
+      updateTimer();
+
+      state.timerInterval = setInterval(() => {
+        state.timeRemaining--;
+        updateTimer();
+        if (state.timeRemaining <= 5 && state.timeRemaining > 0) audio.playTick();
+        if (state.timeRemaining <= 0) endRound("TIME'S UP!");
+      }, 1000);
+    }
+
+    function updateTimer() {
+      DOM.timerDisplay.textContent = `${state.timeRemaining}s`;
+    }
+
+    function handleSubmission(e) {
+      e.preventDefault();
+      if (!state.isRaceActive) return;
+
+      const id = parseInt(DOM.spellerSelect.value, 10);
+      const player = state.players.find(p => p.id === id);
+      const val = DOM.spellingInput.value.trim().toUpperCase();
+
+      if (!player || !val) return;
+
+      state.totalAttempts++;
+
+      if (val === state.targetWord) {
+        audio.playCorrect();
+        state.totalCorrect++;
+        state.correctInRound++;
+
+        const elapsed = (Date.now() - state.roundStartTime) / 1000;
+        let coins = 50;
+        if (elapsed <= 5) coins += 30;
+
+        player.streak++;
+        coins += player.streak * 5;
+        player.coins += coins;
+        player.progress = 100;
+
+        showFeedback(`🎉 CORRECT! ${player.name} +${coins} 🪙!`, "success");
+      } else {
+        audio.playWrong();
+        player.streak = 0;
+        showFeedback(`❌ Incorrect spelling by ${player.name}!`, "error");
+      }
+
+      DOM.spellingInput.value = '';
+      DOM.spellingInput.focus();
+
+      renderTracks();
+      renderLeaderboard();
+      populateSelect();
+    }
+
+    function endRound(reason) {
+      clearInterval(state.timerInterval);
+      state.isRaceActive = false;
+      DOM.btnStartRace.disabled = false;
+      DOM.spellingInput.disabled = true;
+      DOM.btnSubmit.disabled = true;
+
+      showFeedback(`🏁 ${reason}`, "success");
+      state.currentRound++;
+      DOM.roundBadge.textContent = `ROUND ${state.currentRound}`;
+    }
+
+    function showFeedback(msg, type) {
+      DOM.feedbackBox.style.display = 'block';
+      DOM.feedbackBox.className = `feedback-banner feedback-${type}`;
+      DOM.feedbackBox.textContent = msg;
+    }
+
+    /* ===================================================================
+       6. EVENT BINDINGS
+       =================================================================== */
+    document.addEventListener('DOMContentLoaded', () => {
+      renderTracks();
+      renderLeaderboard();
+      populateSelect();
+      renderRosterModal();
+
+      DOM.btnToggleMask.addEventListener('click', () => {
+        state.isMasked = !state.isMasked;
+        DOM.secretWordInput.type = state.isMasked ? 'password' : 'text';
+        DOM.btnToggleMask.textContent = state.isMasked ? '👁️ Unmask' : '🔒 Mask';
+      });
+
+      DOM.btnSpeak.addEventListener('click', () => {
+        state.speechRate = 0.85;
+        speakWord();
+      });
+
+      DOM.btnSlowSpeech.addEventListener('click', () => {
+        state.speechRate = 0.5;
+        speakWord();
+      });
+
+      DOM.btnStartRace.addEventListener('click', startRound);
+      DOM.submissionForm.addEventListener('submit', handleSubmission);
+
+      // Modals
+      document.getElementById('btnRosterModal').addEventListener('click', () => {
+        document.getElementById('rosterModal').classList.add('active');
+      });
+
+      document.getElementById('btnStatsModal').addEventListener('click', () => {
+        DOM.statAttempts.textContent = state.totalAttempts;
+        const acc = state.totalAttempts > 0 ? Math.round((state.totalCorrect / state.totalAttempts) * 100) : 0;
+        DOM.statAccuracy.textContent = `${acc}%`;
+        document.getElementById('statsModal').classList.add('active');
+      });
+
+      document.getElementById('btnResetModal').addEventListener('click', () => {
+        document.getElementById('resetModal').classList.add('active');
+      });
+
+      document.querySelectorAll('.closeModal').forEach(b => {
+        b.addEventListener('click', () => {
+          document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+        });
+      });
+
+      document.getElementById('btnSelectAll').addEventListener('click', () => {
+        state.players.forEach(p => p.active = true);
+        renderRosterModal();
+        renderTracks();
+        renderLeaderboard();
+        populateSelect();
+      });
+
+      document.getElementById('btnDeselectAll').addEventListener('click', () => {
+        state.players.forEach(p => p.active = false);
+        renderRosterModal();
+        renderTracks();
+        renderLeaderboard();
+        populateSelect();
+      });
+
+      document.getElementById('btnResetRound').addEventListener('click', () => {
+        clearInterval(state.timerInterval);
+        state.isRaceActive = false;
+        state.players.forEach(p => p.progress = 0);
+        DOM.btnStartRace.disabled = false;
+        DOM.spellingInput.disabled = true;
+        DOM.btnSubmit.disabled = true;
+        renderTracks();
+        document.getElementById('resetModal').classList.remove('active');
+      });
+
+      document.getElementById('btnResetFull').addEventListener('click', () => {
+        clearInterval(state.timerInterval);
+        state.isRaceActive = false;
+        state.currentRound = 1;
+        state.totalAttempts = 0;
+        state.totalCorrect = 0;
+        DOM.roundBadge.textContent = 'ROUND 1';
+        state.players.forEach(p => { p.coins = 0; p.streak = 0; p.progress = 0; });
+        DOM.btnStartRace.disabled = false;
+        DOM.spellingInput.disabled = true;
+        DOM.btnSubmit.disabled = true;
+        renderTracks();
+        renderLeaderboard();
+        populateSelect();
+        document.getElementById('resetModal').classList.remove('active');
+      });
+    });
+  </script>
+</body>
+</html>
